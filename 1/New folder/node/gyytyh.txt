@@ -1,0 +1,13 @@
+router.post('/store',upload.single('avatar'), EmployeeController.store)
+
+
+const upload=require('../middleware/upload')
+
+  if(req.file){
+        employee.avatar=req.file.path
+    }
+
+,
+    avatar:{
+        type:String
+    }
