@@ -1,0 +1,51 @@
+const express = require('express')
+const  mongoose = require('mongoose')
+const morgan =require('morgan')
+const bodyParser =require('body-parser')
+const nodemailer = require('nodemailer');
+
+const  EmployeeRoute= require('./routes/employee')
+const  UserRoute= require('./routes/user')
+const  RideRoute= require('./routes/ride')
+const  ChatRoute= require('./routes/chat')
+const  EmailRoute= require('./routes/email')
+const  AuthUserRoute= require('./routes/authuser')
+const  OtpUserRoute= require('./routes/otpuser')
+const  ActiverideRoute= require('./routes/activeride')
+
+mongoose.connect('mongodb+srv://admin:admin@cluster0.mbqk4.mongodb.net/emp?retryWrites=true&w=majority', {useNewUrlParser:true , useUnifiedTopology:true})
+
+const db=mongoose.connection
+
+db.on('error',(err)=>{
+    console.log(err)
+})
+
+db.once('open',()=>{
+
+console.log('database connection')
+})
+
+const app=express()
+
+app.use(morgan('dev'))
+
+app.use(bodyParser.urlencoded({extended:true}))
+app.use(bodyParser.json())
+
+const PORT =process.env.PORT || 3000
+app.listen(PORT,()=>{
+    console.log(`server is running on port ${PORT}`)
+})
+
+
+app.use('/api/employee',EmployeeRoute)
+app.use('/api/user',UserRoute)
+app.use('/api/ride',RideRoute)
+app.use('/api/chat',ChatRoute)
+app.use('/api/email',EmailRoute)
+
+app.use('/api/authuser',AuthUserRoute)
+app.use('/api/otpuser',OtpUserRoute)
+app.use('/api/activeride',ActiverideRoute)
+
